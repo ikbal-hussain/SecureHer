@@ -10,22 +10,19 @@ const Dashboard = () => {
   const [locationSharing, setLocationSharing] = useState(false);
   const navigate = useNavigate();
 
-  
   useEffect(() => {
-    const loggedUser = auth.currentUser;
-    if (loggedUser) {
-      setUser(loggedUser);
-    } else {
-      navigate('/login'); 
-    }
-  }, [navigate]);
+    // const loggedUser = auth.currentUser;
+    // if (loggedUser) {
+    //   setUser(loggedUser);
+    // }
 
+    setUser("Guest");
+  }, []);
 
   const handleLogout = async () => {
     await signOut(auth);
-    navigate('/login');
+    setUser(null); // Reset user state after logout
   };
-
 
   const handleAddContact = () => {
     if (newContact.trim() !== '') {
@@ -33,7 +30,6 @@ const Dashboard = () => {
       setNewContact('');
     }
   };
-
 
   const handleLocationSharing = () => {
     setLocationSharing(!locationSharing);
@@ -44,7 +40,6 @@ const Dashboard = () => {
     }
   };
 
-
   const handleSOS = () => {
     alert('SOS Alert sent to your emergency contacts!');
   };
@@ -54,7 +49,7 @@ const Dashboard = () => {
       <div className="bg-white shadow-md rounded-lg p-8 max-w-2xl w-full">
         <h2 className="text-3xl font-bold text-center mb-6">Dashboard</h2>
 
-        {user && (
+        {user ? (
           <div className="mb-6">
             <h3 className="text-xl font-bold">Welcome, {user.email}</h3>
             <button
@@ -62,6 +57,16 @@ const Dashboard = () => {
               className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
             >
               Logout
+            </button>
+          </div>
+        ) : (
+          <div className="mb-6">
+            <h3 className="text-xl font-bold">Welcome, Guest</h3>
+            <button
+              onClick={() => navigate('/login')}
+              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            >
+              Login / Sign Up
             </button>
           </div>
         )}
